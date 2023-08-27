@@ -4,6 +4,7 @@
     "description": "Declare a prototype for a procedure for free syntax",
     "body": [
       "dcl-pr ${1:procname};",
+      "\t$0",
       "end-pr;"
     ],
     "scope": "sqlrpgle,rpgle"
@@ -13,7 +14,8 @@
     "description": "Declare a prototype for a procedure for columnar syntax",
     "body": [
       "     d ${1:procname}...",
-      "     d                  pr"
+      "     d                  pr",
+      "$0",
     ],
     "scope": "sqlrpgle,rpgle,rpg"
   },
@@ -22,6 +24,7 @@
     "description": "Declare a prototype for a procedure for free syntax",
     "body": [
       "dcl-proc ${1:procname} export;",
+      "\t$0",
       "end-proc;"
     ],
     "scope": "sqlrpgle,rpgle"
@@ -33,9 +36,20 @@
       "     p ${1:procname}...",
       "     p                                      export",
       "     p                  b",
+      "$0",
       "     p ${1:procname}...",
       "     p                  e",
     ],
     "scope": "sqlrpgle,rpgle,rpg"
+  },
+  "Start free block for RPGLE FixedForm":{
+    "prefix": "!beginfreeblock",
+    "description": "Begin a free block syntax",
+    "body": [
+      "      /free",
+      "       $0",
+      "      /end-free",
+    ],
+    "scope": "sqlrpgle,rpgle"
   }
 }
