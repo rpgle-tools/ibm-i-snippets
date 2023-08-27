@@ -1,6 +1,7 @@
 {
   "name": "snippets-for-ibm-i-languages",
   "displayName": "Snippets for IBM i languages",
+  "publisher": "CristianRivera",
   "description": "todo",
   "version": "0.0.1",
   "engines": {
