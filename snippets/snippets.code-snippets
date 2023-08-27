@@ -51,5 +51,14 @@
       "      /end-free",
     ],
     "scope": "sqlrpgle,rpgle"
+  },
+  "Sum two numbers in RPGLE FixedForm":{
+    "prefix": "!caddfixed",
+    "description": "add two digits in rpgle for fixed syntax",
+    "body": [
+      "     c     ${1:${2:              }}       add       ${1:${2:              }}       ${1:${2:              }}",
+      "$0",
+    ],
+    "scope": "sqlrpgle,rpgle"
   }
 }
