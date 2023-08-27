@@ -56,8 +56,7 @@
     "prefix": "!caddfixed",
     "description": "add two digits in rpgle for fixed syntax",
     "body": [
-      "     c     ${1/(^.{14}).*$/$1/g}add       ${2/(^.{14}).*$/$2/g}${3/(^.{14}).*$/$1/g}",
-      "$0",
+      "     c     ${1/(^.{14}).*$/$1/g} add       ${2/(^.{14}).*$/$1/g} ${3/(^.{14}).*$/$1/g}",      "$0",
     ],
     "scope": "sqlrpgle,rpgle"
   },
@@ -65,8 +64,7 @@
     "prefix": "!caddfixed",
     "description": "add two digits in rpgle for fixed syntax",
     "body": [
-      "     c     ${1/(^.{14}).*$/$1/g} add       ${2/(^.{14}).*$/$2/g}${3/(^.{14}).*$/$1/g}",
-      "$0",
+      "     c     ${1/(^.{14}).*$/$1/g} add       ${2/(^.{14}).*$/$1/g} ${3/(^.{14}).*$/$1/g}",      "$0",
     ],
     "scope": "sqlrpgle,rpgle"
   },
@@ -74,7 +72,7 @@
     "prefix": "!caddfixed",
     "description": "add two digits in rpgle for fixed syntax",
     "body": [
-      "     c     ${1/(^.{14}).*$/$1/g} add       ${2/(^.{14}).*$/$2/g} ${3/(^.{14}).*$/$1/g}",
+      "     c     ${1/(^.{14}).*$/$1/g} add       ${2/(^.{14}).*$/$1/g} ${3/(^.{14}).*$/$1/g}",
       "$0",
     ],
     "scope": "sqlrpgle,rpgle"
