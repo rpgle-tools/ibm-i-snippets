@@ -1,0 +1,20 @@
+{
+  "name": "snippets-for-ibm-i-languages",
+  "displayName": "Snippets for IBM i languages",
+  "description": "todo",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.81.0"
+  },
+  "categories": [
+    "Snippets"
+  ],
+  "contributes": {
+    "snippets": [
+      {
+        "language": "rpg, rpgle, sqlrpgle, clle",
+        "path": "./snippets/snippets.code-snippets"
+      }
+    ]
+  }
+}
