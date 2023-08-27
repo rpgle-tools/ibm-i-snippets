@@ -1,1 +1,43 @@
-{}
+{
+  "Declare procedure prototype for RPGLE Free Form":{
+    "prefix": "!dclprfree",
+    "description": "Declare a prototype for a procedure for free syntax",
+    "body": [
+      "dcl-pr ${1:procname};",
+      "end-pr;"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare procedure prototype for RPGLE FixedForm":{
+    "prefix": "!dclprfixed",
+    "description": "Declare a prototype for a procedure for columnar syntax",
+    "body": [
+      "     p ${1:procname}...",
+      "     p                  b",
+      "     p ${1:procname}...",
+      "     p                  e",
+    ],
+    "scope": "sqlrpgle,rpgle,rpg"
+  },
+  "Declare exportable procedure prototype for RPGLE Free Form":{
+    "prefix": "!dcleprfree",
+    "description": "Declare a prototype for a procedure for free syntax",
+    "body": [
+      "dcl-pr ${1:procname} export;",
+      "end-pr;"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare exportable procedure prototype for RPGLE FixedForm":{
+    "prefix": "!dcleprfixed",
+    "description": "Declare a prototype for a procedure for columnar syntax",
+    "body": [
+      "     p ${1:procname}...",
+      "     p                                      export",
+      "     p                  b",
+      "     p ${1:procname}...",
+      "     p                  e",
+    ],
+    "scope": "sqlrpgle,rpgle,rpg"
+  }
+}
