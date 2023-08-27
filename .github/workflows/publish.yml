@@ -26,9 +26,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: Publish VS Code Extension
-        # You may pin to the exact commit or the version.
-        # uses: HaaLeo/publish-vscode-extension@dfe4f6ad46624424fe24cb5bca79839183399045
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
         with:
