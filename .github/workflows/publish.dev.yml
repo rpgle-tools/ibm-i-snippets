@@ -26,7 +26,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: dudeofawesome/npm-install
+      - name: Install Dependencies
         uses: dudeofawesome/npm-install@v1.0.0
       - name: Build Extension
         run: npm run vscode:prepublish 
@@ -34,8 +34,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        run: npm install
+      - uses: actions/checkout@v3
+      - name: Install Dependencies
+        uses: dudeofawesome/npm-install@v1.0.0
       - name: Prepare test environment
         run: npm run pretest
       - name: Run Tests
