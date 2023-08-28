@@ -31,10 +31,6 @@
       {
         "language": "rpg",
         "path": "./snippets/snippets.code-snippets"
-      },
-      {
-        "language": "sqlrpgle",
-        "path": "./snippets/snippets.code-snippets"
       }
     ]
   },
