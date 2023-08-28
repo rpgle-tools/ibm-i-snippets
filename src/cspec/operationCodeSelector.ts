@@ -1,20 +1,27 @@
 import * as vscode from "vscode";
+import { OperationCodeElementExtended, OperationCodeStore } from "./OperationCodeStore";
 
 export class OperationCodeSelector {
-  private operationCode:string;
+  private operationCode:undefined|OperationCodeElementExtended;
   private opCodeSelector?:vscode.QuickPick<vscode.QuickPickItem>;
   private onClose:Function;
   private onSuccess:Function;
-  constructor(opCode:string = "") {
-    this.operationCode = opCode;
+  constructor() {
     this.onClose = ()=>{};
     this.onSuccess = ()=>{};
   }
-  private setOperationCode(opCode:string){
+  private setOperationCode(opCode:OperationCodeElementExtended){
     this.operationCode = opCode;
   }
-  getOperationCode():string{
+  getOperationCode():OperationCodeElementExtended|undefined{
     return this.operationCode;
+  }
+  getOperationCodeName():string{
+    let operationCodeName = this.operationCode?.label;
+    if (!operationCodeName){
+      operationCodeName = "";
+    }
+    return operationCodeName;
   }
   private onCloseIntern() {
     if(!this.opCodeSelector){
@@ -45,27 +52,7 @@ export class OperationCodeSelector {
     }
     this.opCodeSelector.placeholder = "Select your c operation code: ";
     
-    this.opCodeSelector.items = [
-      {
-        label: "add",
-        detail: "add two numbers, puts the addition on the result field",
-        description: "add two numbers, puts the addition on the result field",
-      },
-      {
-        label: "z-add",
-        detail:
-          "add one number and zero, puts the addition on the result field",
-        description:
-          "add one number and zero, puts the addition on the result field",
-      },
-      {
-        label: "sub",
-        detail:
-          "performs the substractions of two numbers, puts the addition on the result field",
-        description:
-          "performs the substractions of two numbers, puts the addition on the result field",
-      },
-    ];
+    this.opCodeSelector.items = OperationCodeStore.getOperationCodeInformation();
     
     this.opCodeSelector.onDidHide(() => {
       this.onCloseIntern();
@@ -74,7 +61,13 @@ export class OperationCodeSelector {
 
     this.opCodeSelector.onDidChangeSelection(([item]) => {
       if (item) {
-        this.setOperationCode(item.label);
+        const operationCodeExtended:OperationCodeElementExtended |undefined =
+          OperationCodeStore.getOperationCodeInformationElement(item.label);
+        if(!operationCodeExtended){
+          vscode.window.showErrorMessage("Operation code not supported");
+          return;
+        }
+        this.setOperationCode(operationCodeExtended);
         this.onSuccessIntern();
       }
     });

@@ -7,14 +7,14 @@ export class FactorSelector {
   private factorInput:vscode.InputBox;
   private onClose:Function;
   private onSuccess:Function;
-  private ruleValidator:RuleValidator;
-  constructor(placeHolder:string) {
+  private ruleValidator:FactorRuleValidator;
+  constructor(placeHolder:string, factorType:string="Factor") {
     this.factor = '';
     this.onClose = ()=>{};
     this.onSuccess = ()=>{};
     this.factorInput = vscode.window.createInputBox();
     this.factorInput.placeholder = placeHolder;
-    this.ruleValidator = new FactorRuleValidator();
+    this.ruleValidator = new FactorRuleValidator(factorType);
   }
   private setFactor(opCode:string){
     this.factor = opCode;
@@ -39,6 +39,8 @@ export class FactorSelector {
     this.onSuccess = onSuccessFunction;
   }
   selectFactor():void{
+    console.log("Select initialized executed!");
+    this.factorInput.show();
     this.factorInput.onDidHide(() => {
       this.onCloseIntern();
       this.onClose();
@@ -56,6 +58,9 @@ export class FactorSelector {
       }
       this.onSuccessIntern();
     });
-    this.factorInput.show();
+    
+  }
+  setRequired(required:boolean){
+    this.ruleValidator.setRequired(required);
   }
 }
