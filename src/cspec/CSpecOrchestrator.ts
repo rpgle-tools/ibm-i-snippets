@@ -21,10 +21,6 @@ export class CSpecOrchestrator{
     this.factor1 = new FactorSelector("Insert the name of the factor 1 sentence");
 		this.factor2 = new FactorSelector("Insert the name of the factor 2 sentence");
 		this.result = new FactorSelector("Insert the result field", "Result ");
-    if (!this.editor){
-			vscode.window.showErrorMessage("Editor does not exists");
-			return;
-		}
   }
 
   private orchestrateOpcode(opCode:OperationCodeElementExtended){
@@ -87,6 +83,10 @@ export class CSpecOrchestrator{
   }
 
   orchestrate(){
+    if (!this.editor){
+			vscode.window.showErrorMessage("This command should be executed in an editor window.");
+			return;
+		}
 		this.opSelector.setOnSuccess(()=>{
       const opCode = this.opSelector.getOperationCode();
       if (!opCode){
