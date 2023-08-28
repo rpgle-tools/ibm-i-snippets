@@ -27,14 +27,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - name: dudeofawesome/npm-install
-        # You may pin to the exact commit or the version.
-        # uses: dudeofawesome/npm-install@5757b893f4f003f1651a92572c291e4add9fd8f9
         uses: dudeofawesome/npm-install@v1.0.0
       - name: Build Extension
         run: npm run vscode:prepublish 
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Install dependencies
+        run: npm install
       - name: Prepare test environment
         run: npm run pretest
       - name: Run Tests
