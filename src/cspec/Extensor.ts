@@ -4,7 +4,7 @@ import { Extensors } from "./OperationCodeStore";
 export class ExtensorSelector {
   private extensors:string[];
   private posibleExtensors:vscode.QuickPickItem[];
-  private extensorSelector?:vscode.QuickPick<vscode.QuickPickItem>;
+  private extensorSelector:vscode.QuickPick<vscode.QuickPickItem>;
   private onClose:Function;
   private onSuccess:Function;
   constructor(extensors:Extensors[]) {
@@ -12,6 +12,7 @@ export class ExtensorSelector {
     this.onClose = ()=>{};
     this.onSuccess = ()=>{};
     this.posibleExtensors = extensors;
+    this.extensorSelector = this.extensorSelector = vscode.window.createQuickPick();;
   }
   private setExtensors(extensors:string[]){
     this.extensors = extensors;
@@ -42,7 +43,6 @@ export class ExtensorSelector {
     this.onSuccess = onSuccessFunction;
   }
   selectExtensor():void{
-    this.extensorSelector = vscode.window.createQuickPick();
     this.extensorSelector.canSelectMany = true;
     if(!this.extensorSelector){
       return;
