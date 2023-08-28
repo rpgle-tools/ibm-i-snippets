@@ -2,35 +2,39 @@
 
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: dudeofawesome/npm-install
-        # You may pin to the exact commit or the version.
-        # uses: dudeofawesome/npm-install@5757b893f4f003f1651a92572c291e4add9fd8f9
+      - name: Install Dependencies
         uses: dudeofawesome/npm-install@v1.0.0
+      - name: Build Extension
+        run: npm run vscode:prepublish 
   
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Dependencies
+        uses: dudeofawesome/npm-install@v1.0.0
+      - name: Prepare test environment
+        run: npm run pretest
+    
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
         with:
