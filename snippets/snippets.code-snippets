@@ -51,5 +51,15 @@
       "      /end-free",
     ],
     "scope": "sqlrpgle,rpgle"
+  },
+  "Declare exportable procedure":{
+    "prefix": "!dcleproc",
+    "description": "Declare a prototype for a procedure for free syntax",
+    "body": [
+      "dcl-proc ${1:procname} export;",
+      "\t$0",
+      "end-proc;"
+    ],
+    "scope": "sqlrpgle,rpgle"
   }
 }
