@@ -52,14 +52,50 @@
     ],
     "scope": "sqlrpgle,rpgle"
   },
-  "Declare exportable procedure":{
-    "prefix": "!dcleproc",
-    "description": "Declare a prototype for a procedure for free syntax",
+  "Declare options for free source":{
+    "prefix": "!dclopt",
+    "description": "Declare a CTL-OPTION",
     "body": [
-      "dcl-proc ${1:procname} export;",
+      "CTL-OPT OPTION(∗SRCSTMT:∗NODEBUGIO) DFTACTGRP(∗No); ",
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare a variable char":{
+    "prefix": "!dclvarchar",
+    "description": "Declare a variable varchar",
+    "body": [
+      "dcl-s ${1:VARNAME} CHAR(50) INZ(${2:'TEXT'});",
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare IF statement":{
+    "prefix": "!if",
+    "description": "Declare a if statement",
+    "body": [
+      "IF ${1:CONDITION};",
       "\t$0",
-      "end-proc;"
+      "ELSEIF ${2:CONDITION};",
+      "\t$0",
+      "ELSE;",
+      "\t$0",
+      "ENDIF;"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare SELECT statement":{
+    "prefix": "!select",
+    "description": "Declare a select statement",
+    "body": [
+      "SELECT",
+      " WHEN ${1:VARIABLE}=${2:RESULT1};",
+      "\t$0",
+      " WHEN ${3:VARIABLE}=${4:RESULT2};",
+      "\t$0",
+      " OTHER;",
+      "\t$0",
+      "ENDSL;"
     ],
     "scope": "sqlrpgle,rpgle"
   }
+  
 }
