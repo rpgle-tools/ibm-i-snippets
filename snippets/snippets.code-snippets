@@ -96,6 +96,71 @@
       "ENDSL;"
     ],
     "scope": "sqlrpgle,rpgle"
+  },
+  "Declare Cursor statement":{
+    "prefix": "!cursor",
+    "description": "Declare a cursor statement",
+    "body": [
+      "EXEC SQL",
+      " DECLARE ${1:CURSORNAME} CURSOR FOR",
+      " SELECT A,B,C FROM TABLE;"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare Open Cursor statement":{
+    "prefix": "!opencursor",
+    "description": "Declare a open cursor statement",
+    "body": [
+      "EXEC SQL",
+      " OPEN ${1:CURSORNAME};"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare Fetch Cursor statement":{
+    "prefix": "!fetchcursor",
+    "description": "Declare a fetch cursor statement",
+    "body": [
+      "EXEC SQL",
+      " FETCH ${1:CURSORNAME} INTO :${2:DATASTRUCTURE};"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare Close Cursor statement":{
+    "prefix": "!closecursor",
+    "description": "Declare a close cursor statement",
+    "body": [
+      "EXEC SQL",
+      " CLOSE ${1:CURSORNAME};"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare Do While statement":{
+    "prefix": "!doWhile",
+    "description": "Declare Do While statement",
+    "body": [
+      "DOW (${1:CONDITION});",
+      " //your code here",
+      "ENDDO;"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare Date Variable statement":{
+    "prefix": "!dclvardate",
+    "description": "Declare Date Variable statement",
+    "body": [
+      "DCL-S ${1:VARIABLE} DATE(*${2:FORMAT});"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Declare External Data Structure statement":{
+    "prefix": "!dclExtDS",
+    "description": "Declare External Data Structure statement",
+    "body": [
+      "DCL-DS ${1:DSNAME} EXTNAME('${2:FILENAME}') END-DS;"
+    ],
+    "scope": "sqlrpgle,rpgle"
   }
+  
+
   
 }
