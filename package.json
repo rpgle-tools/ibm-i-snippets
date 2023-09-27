@@ -3,7 +3,7 @@
   "displayName": "Snippets for IBM i languages",
   "publisher": "CristianRivera",
   "description": "todo",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "icon": "assets/images/snippets-for-ibm-i-languages.jpg",
   "engines": {
     "vscode": "^1.81.0"
