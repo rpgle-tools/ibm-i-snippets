@@ -1,32 +1,55 @@
-import { CSpecFormatter } from "./CSpecFormatter";
+import { CFormatter } from "./CFormatter";
+import { CType } from "./CType";
 import { ExtensorSelector } from "./Extensor";
 import { FactorSelector } from "./Factor";
-import { FactorSyntaxRule, OperationCodeElementExtended } from "./OperationCodeStore";
+import { OperationCodeElementExtended } from "./OperationCodeStore";
 import { OperationCodeSelector } from "./operationCodeSelector";
 import * as vscode from 'vscode';
 
-export class CSpecOrchestrator{
+const CREATE = "CREATE";
+const EDIT = "EDIT";
+export class COrchestrator{
   factor1:FactorSelector;
   factor2:FactorSelector;
   result :FactorSelector;
   opSelector:OperationCodeSelector;
-  formatter:CSpecFormatter;
+  formatter:CFormatter;
   editor:vscode.TextEditor | undefined;
   extensor?:ExtensorSelector;
+  extensorsDefaults:string[] = [];
+  editMode:string = CREATE;
 
-  constructor(){
+  constructor(initialData: CType | undefined = undefined){
     this.editor = vscode.window.activeTextEditor;
-    this.formatter = new CSpecFormatter();
+    this.formatter = new CFormatter();
     this.opSelector = new OperationCodeSelector();
     this.factor1 = new FactorSelector("Insert the name of the factor 1 sentence");
 		this.factor2 = new FactorSelector("Insert the name of the factor 2 sentence");
 		this.result = new FactorSelector("Insert the result field", "Result ");
+    if (!initialData){
+      return;
+    }
+    this.opSelector.setInitialData(initialData?.getOpcode());
+    this.factor1.setInitialData(initialData?.getFactor1());
+    this.factor2.setInitialData(initialData?.getFactor2());
+    this.extensorsDefaults = initialData.getExtensors();
+    this.result.setInitialData(initialData.getResult());
+  }
+
+  public setCreateMode(){
+    this.editMode = CREATE;
+  }
+
+  public setEditMode(){
+    this.editMode = EDIT;
   }
 
   private orchestrateOpcode(opCode:OperationCodeElementExtended){
     this.extensor = new ExtensorSelector(opCode.posibleExtensors);
+    this.extensor.setInitialData(this.extensorsDefaults);
     this.extensor.setOnSuccess(()=>{
       if(opCode.firstFactorRules.shouldBeAvoided){
+        this.factor1.setInitialData("");
         this.factor2.selectFactor();
         return;
       }
@@ -34,6 +57,7 @@ export class CSpecOrchestrator{
     });
     this.factor1.setOnSuccess(()=>{
       if(opCode.secondFactorRules.shouldBeAvoided){
+        this.factor2.setInitialData("");
         this.result.selectFactor();
         return;
       }
@@ -41,6 +65,7 @@ export class CSpecOrchestrator{
 		});
 		this.factor2.setOnSuccess(()=>{
       if(opCode.resultFactorRules.shouldBeAvoided){
+        this.result.setInitialData("");
         this.resolve();
         return;
       }
@@ -50,6 +75,7 @@ export class CSpecOrchestrator{
 			this.resolve();
 		});
     if(opCode.posibleExtensors.length === 0){
+      this.extensor.setInitialData([]);
       this.factor1.selectFactor();
       return;
     }
@@ -68,17 +94,27 @@ export class CSpecOrchestrator{
       this.extensor.getExtensors(),
       this.factor1.getFactor(),
       this.factor2.getFactor(),
-      this.result.getFactor()
+      this.result.getFactor(),
+      this.editMode === CREATE
     );
-    vscode.window.showInformationMessage(formattedCSpec);
-    this.editor.edit((edit: { insert: (arg0: any, arg1: string) => void; })=>{
+    this.editor.edit((edit)=>{
       if(!this.editor){
         return;
       }
-      edit.insert(
-        new vscode.Position(this.editor.selection.start.line, 0),
-        formattedCSpec
-      );
+      if (this.editMode === CREATE){
+        edit.insert(
+          new vscode.Position(this.editor.selection.start.line, 0),
+          formattedCSpec
+        );
+        return;
+      }
+      if (this.editMode === EDIT){
+        const selection = this.editor.selection;
+        const range = this.editor.document.lineAt(selection.active.line).range;
+        edit.replace(range,formattedCSpec);
+        return;
+      }
+
     });
   }
 

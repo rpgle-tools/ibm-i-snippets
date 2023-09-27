@@ -16,6 +16,12 @@ export class FactorSelector {
     this.factorInput.placeholder = placeHolder;
     this.ruleValidator = new FactorRuleValidator(factorType);
   }
+
+  public setInitialData(initialData:string) {
+    this.factorInput.value = initialData;
+    this.factor = initialData;
+  }
+
   private setFactor(opCode:string){
     this.factor = opCode;
   }
@@ -39,7 +45,6 @@ export class FactorSelector {
     this.onSuccess = onSuccessFunction;
   }
   selectFactor():void{
-    console.log("Select initialized executed!");
     this.factorInput.show();
     this.factorInput.onDidHide(() => {
       this.onCloseIntern();

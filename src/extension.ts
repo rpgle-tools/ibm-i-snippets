@@ -1,29 +1,45 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { CSpecOrchestrator } from './cspec/CSpecOrchestrator';
+import { COrchestrator } from './cspec/COrchestrator';
+import { ColumnAssistant } from './ui/components/ColumnAsisstant';
+import { CFormatter } from './cspec/CFormatter';
+import { EditorSelector } from './utils/EditorSelectors';
+import { CType } from './cspec/CType';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "cspec" is now active!');
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('snippets-for-ibm-i-languages.showCSpec', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		
-		const orchestrator = new CSpecOrchestrator();
+	let cSpecsOrchestator = vscode.commands.registerCommand('snippets-for-ibm-i-languages.showCSpec', () => {
+		const orchestrator = new COrchestrator();
 		orchestrator.orchestrate();
-
 	});
 
-	context.subscriptions.push(disposable);
+	let cSpecsOrchestatorEdit = vscode.commands.registerCommand('snippets-for-ibm-i-languages.editCSpec', () => {
+		const editor = new EditorSelector(vscode.window.activeTextEditor);
+		const formater:CFormatter = new CFormatter();
+		const currentLine = editor.getCurrentLine();
+		if (!currentLine.status){
+			vscode.window.showErrorMessage("You have to open an editor window to use this functionality");
+			return;
+		}
+		const ctype:CType = formater.read(editor.getCurrentLine().text);
+		const orchestrator = new COrchestrator(ctype);
+		orchestrator.setEditMode();
+		orchestrator.orchestrate();
+	});
+
+	let editRpgleUi = vscode.commands.registerCommand('snippets-for-ibm-i-languages.showRpgleUiEditor', () => {
+		ColumnAssistant.render(context.extensionUri);
+		vscode.window.onDidChangeTextEditorSelection(()=>{
+			const selectedText = vscode.window.activeTextEditor?.document.lineAt(vscode.window.activeTextEditor.selection.start.line).text;
+			console.log(selectedText);
+			ColumnAssistant.onUpdate();
+		});
+	});
+
+	context.subscriptions.push(cSpecsOrchestator);
+	context.subscriptions.push(cSpecsOrchestatorEdit);
+	context.subscriptions.push(editRpgleUi);
 }
+
 
 // This method is called when your extension is deactivated
 export function deactivate() {}

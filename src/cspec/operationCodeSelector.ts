@@ -3,12 +3,16 @@ import { OperationCodeElementExtended, OperationCodeStore } from "./OperationCod
 
 export class OperationCodeSelector {
   private operationCode:undefined|OperationCodeElementExtended;
-  private opCodeSelector?:vscode.QuickPick<vscode.QuickPickItem>;
+  private opCodeSelector:vscode.QuickPick<vscode.QuickPickItem>;
   private onClose:Function;
   private onSuccess:Function;
   constructor() {
+    this.opCodeSelector = vscode.window.createQuickPick();
     this.onClose = ()=>{};
     this.onSuccess = ()=>{};
+  }
+  public setInitialData(initialData:string) {
+    this.opCodeSelector.value = initialData;
   }
   private setOperationCode(opCode:OperationCodeElementExtended){
     this.operationCode = opCode;
@@ -46,7 +50,7 @@ export class OperationCodeSelector {
     this.onSuccess = onSuccessFunction;
   }
   selectOperationCode():void{
-    this.opCodeSelector = vscode.window.createQuickPick();
+    
     if(!this.opCodeSelector){
       return;
     }

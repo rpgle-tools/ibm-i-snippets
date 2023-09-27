@@ -13,7 +13,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:cspec.showCSpec"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -21,6 +20,14 @@
       {
         "command": "snippets-for-ibm-i-languages.showCSpec",
         "title": "Create C Spec for RPG Fixed format"
+      },
+      {
+        "command": "snippets-for-ibm-i-languages.editCSpec",
+        "title": "Edit C Spec for RPG Fixed format"
+      },
+      {
+        "command": "snippets-for-ibm-i-languages.showRpgleUiEditor",
+        "title": "Edit RPGLE colums using Ui"
       }
     ],
     "snippets": [
@@ -35,26 +42,38 @@
     ]
   },
   "dependencies": {
+    "@vscode/webview-ui-toolkit": "^1.2.2",
     "npm-watch": "^0.11.0"
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run compile-ui && npm run esbuild-compile",
+    "compile-ui": "npm run clean-ui && npm run copy-ui",
+    "clean-ui": "npx rimraf out/ui/web/",
+    "copy-ui": "copyfiles -u 3 src/ui/web/*.html out/ui/web/",
     "compile": "tsc -p ./",
+    "esbuild-compile": "node ./esbuild.js",
+    "package": "NODE_ENV=production node ./esbuild.js",
     "watch": "tsc -watch -p ./",
+    "esbuild-watch": "node ./esbuild.js --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.81.0",
+    "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.81.0",
+    "@types/vscode-webview": "^1.57.2",
     "@typescript-eslint/eslint-plugin": "^6.4.1",
     "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-electron": "^2.3.4",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.19.2",
     "eslint": "^8.47.0",
     "glob": "^10.3.3",
     "mocha": "^10.2.0",
-    "typescript": "^5.1.6",
-    "@vscode/test-electron": "^2.3.4"
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6"
   }
 }

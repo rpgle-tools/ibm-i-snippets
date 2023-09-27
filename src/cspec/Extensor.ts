@@ -12,7 +12,16 @@ export class ExtensorSelector {
     this.onClose = ()=>{};
     this.onSuccess = ()=>{};
     this.posibleExtensors = extensors;
-    this.extensorSelector = this.extensorSelector = vscode.window.createQuickPick();;
+    this.extensorSelector = this.extensorSelector = vscode.window.createQuickPick();
+    this.extensorSelector.canSelectMany = true;
+    this.extensorSelector.placeholder = "Select your extensors: ";    
+    this.extensorSelector.items = this.posibleExtensors;
+  }
+  public setInitialData(initialData:string[]) {
+    this.extensorSelector.selectedItems = this.posibleExtensors.filter(extensor=>{
+      return initialData.includes(extensor.label);
+    });
+    this.extensorSelector.activeItems = this.extensorSelector.selectedItems;
   }
   private setExtensors(extensors:string[]){
     this.extensors = extensors;
@@ -43,15 +52,9 @@ export class ExtensorSelector {
     this.onSuccess = onSuccessFunction;
   }
   selectExtensor():void{
-    this.extensorSelector.canSelectMany = true;
     if(!this.extensorSelector){
       return;
-    }
-    this.extensorSelector.placeholder = "Select your extensors: ";
-    
-    
-    this.extensorSelector.items = this.posibleExtensors;
-    
+    }    
     this.extensorSelector.onDidHide(() => {
       this.onCloseIntern();
       this.onClose();
@@ -59,7 +62,9 @@ export class ExtensorSelector {
 
     this.extensorSelector.onDidChangeSelection((items) => {
       if (items) {
-        this.setExtensors(items.map(item=>item.label));
+        this.setExtensors(items.map(item=>{
+          return item.label;
+        }));
       }
     });
     this.extensorSelector.onDidAccept (()=>{
