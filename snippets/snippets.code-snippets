@@ -159,6 +159,42 @@
       "DCL-DS ${1:DSNAME} EXTNAME('${2:FILENAME}') END-DS;"
     ],
     "scope": "sqlrpgle,rpgle"
+  },
+  "Generate json into a IFS File":{
+    "prefix": "!data-genIFS",
+    "description": "Generate json into a IFS File",
+    "body": [
+      "DATA-GEN ${1:DSNAME} %DATA('${2:IFSFILE}':'doc=file')",
+      "%Gen('YAJL/YAJLDTAGEN');"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Generate json into a variable":{
+    "prefix": "!data-genVariable",
+    "description": "Generate json into a variable",
+    "body": [
+      "DATA-GEN ${1:DSNAME} %DATA('${2:JSONVariable}')",
+      "%Gen('YAJL/YAJLDTAGEN');"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Parse json into a variable from file":{
+    "prefix": "!data-intoVariablefromFile",
+    "description": "Parse json into a variable from file",
+    "body": [
+      "DATA-INTO ${1:DSNAME} %DATA('${2:Document_to_process}':'doc=file case=any')",
+      "%Parser('YAJL/YAJLINTO');"
+    ],
+    "scope": "sqlrpgle,rpgle"
+  },
+  "Convert json into a variable":{
+    "prefix": "!data-intoVariable",
+    "description": "Convert json into a variable",
+    "body": [
+      "DATA-INTO ${1:DSNAME} %DATA(${2:VariableWithJson}:'case=convert')",
+      "%Parser('YAJL/YAJLINTO');"
+    ],
+    "scope": "sqlrpgle,rpgle"
   }
   
 
